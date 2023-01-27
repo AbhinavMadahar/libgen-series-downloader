@@ -44,7 +44,7 @@ func main() {
 	}
 
 	searchPageUrl := fmt.Sprintf("https://libgen.is/search.php?&req=%s&column=series",
-		strings.ReplaceAll(seriesName, " ", "+"))
+        strings.NewReplacer(" ", "+").Replace(seriesName))
 	searchPage := downloadPage(searchPageUrl)
 
 	downloadLinksRegex := regexp.MustCompile(`http://library.lol/main/[A-Za-z0-9]+`)
@@ -58,7 +58,7 @@ func main() {
 
 		getFilenameRegex := regexp.MustCompile(`http://[0-9.]+/main/[0-9]+/[0-9a-z]+/(.*)`)
 		filename := getFilenameRegex.FindStringSubmatch(downloadLink)[1]
-		filename = strings.ReplaceAll(filename, "%20", " ")
+        filename = strings.NewReplacer("%20", " ").Replace(filename)
 		removePercentEscapedCharactersRegex := regexp.MustCompile(`%2[0-9A-Z]`)
 		filename = removePercentEscapedCharactersRegex.ReplaceAllString(filename, "")
 
